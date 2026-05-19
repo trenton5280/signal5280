@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Signal+ · 5280 Magazine</title>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0c0c0e;--bg2:#131316;--bg3:#1a1a1f;--bg4:#202028;--card:#16161b;
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);--border3:rgba(255,255,255,0.22);
+  --text:#f0efe8;--text2:#8c8b85;--text3:#55544f;
+  --gold:#d4a853;--gold-bg:rgba(212,168,83,0.1);--gold-border:rgba(212,168,83,0.25);
+  --teal:#4ecdc4;--teal-bg:rgba(78,205,196,0.1);--teal-border:rgba(78,205,196,0.25);
+  --rose:#e8738a;--rose-bg:rgba(232,115,138,0.1);--rose-border:rgba(232,115,138,0.25);
+  --violet:#9b8afb;--violet-bg:rgba(155,138,251,0.1);--violet-border:rgba(155,138,251,0.25);
+  --radius:10px;--font:'DM Sans',sans-serif;--serif:'Libre Baskerville',serif;--mono:'DM Mono',monospace;
+}
+body{font-family:var(--font);background:var(--bg);color:var(--text);min-height:100vh;}
+.shell{display:grid;grid-template-columns:270px 1fr;min-height:100vh;}
+
+/* SIDEBAR */
+.sidebar{background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:hidden;}
+.brand{padding:1.4rem 1.25rem 1.1rem;border-bottom:1px solid var(--border);}
+.brand-name{font-family:var(--serif);font-size:1.2rem;letter-spacing:-0.01em;color:var(--text);}
+.brand-name em{color:var(--gold);font-style:italic;}
+.brand-sub{font-size:0.62rem;font-family:var(--mono);color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;margin-top:3px;}
+.nav{padding:0.6rem 0;border-bottom:1px solid var(--border);}
+.nav-item{display:flex;align-items:center;gap:9px;padding:0.55rem 1.25rem;font-size:0.8rem;cursor:pointer;color:var(--text2);transition:all 0.14s;border-left:2px solid transparent;}
+.nav-item:hover{color:var(--text);background:var(--bg3);}
+.nav-item.active{color:var(--text);background:var(--bg3);border-left-color:var(--gold);}
+.nav-icon{width:15px;height:15px;flex-shrink:0;opacity:0.55;}
+.nav-item.active .nav-icon{opacity:1;}
+.cat-section{flex:1;overflow:hidden;display:flex;flex-direction:column;}
+.cat-search-wrap{padding:0.65rem 1rem;border-bottom:1px solid var(--border);}
+.cat-search-wrap input{width:100%;background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:6px 10px;font-size:0.76rem;font-family:var(--font);color:var(--text);outline:none;}
+.cat-search-wrap input::placeholder{color:var(--text3);}
+.cat-list{overflow-y:auto;flex:1;padding-bottom:1rem;}
+.cat-list::-webkit-scrollbar{width:3px;}
+.cat-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.group-label{font-size:0.58rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;padding:0.75rem 1.25rem 0.2rem;}
+.cat-item{padding:0.38rem 1.25rem;font-size:0.76rem;cursor:pointer;color:var(--text2);line-height:1.4;border-left:2px solid transparent;transition:all 0.12s;}
+.cat-item:hover{color:var(--text);border-left-color:var(--border2);}
+.cat-item.active{color:var(--gold);border-left-color:var(--gold);}
+
+/* MAIN */
+.main{display:flex;flex-direction:column;min-height:100vh;overflow:hidden;}
+.tab-bar{background:var(--bg2);border-bottom:1px solid var(--border);padding:0 1.75rem;display:flex;align-items:center;gap:0;flex-shrink:0;}
+.tab{padding:0.875rem 1.2rem;font-size:0.8rem;cursor:pointer;color:var(--text2);border-bottom:2px solid transparent;transition:all 0.15s;display:flex;align-items:center;gap:6px;white-space:nowrap;}
+.tab:hover{color:var(--text);}
+.tab.active{color:var(--text);border-bottom-color:var(--gold);}
+.tab-badge{font-size:0.62rem;font-family:var(--mono);background:var(--gold-bg);color:var(--gold);border:1px solid var(--gold-border);padding:1px 6px;border-radius:20px;}
+.page-header{padding:1.4rem 1.75rem 1.1rem;border-bottom:1px solid var(--border);flex-shrink:0;}
+.page-header h1{font-family:var(--serif);font-size:1.3rem;font-weight:400;color:var(--text);margin-bottom:2px;}
+.page-header p{font-size:0.76rem;color:var(--text2);}
+.toolbar{padding:0.75rem 1.75rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;flex-wrap:wrap;flex-shrink:0;}
+.pill{font-size:0.7rem;font-family:var(--mono);padding:4px 11px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);cursor:pointer;transition:all 0.14s;}
+.pill:hover{color:var(--text);border-color:var(--border3);}
+.pill.active{background:var(--text);color:var(--bg);border-color:var(--text);}
+.toolbar-right{margin-left:auto;display:flex;gap:7px;}
+
+/* BUTTONS */
+button{font-family:var(--font);cursor:pointer;transition:all 0.14s;}
+button:active:not(:disabled){transform:scale(0.97);}
+.btn{background:var(--bg3);border:1px solid var(--border2);border-radius:7px;color:var(--text);padding:8px 14px;font-size:0.8rem;}
+.btn:hover:not(:disabled){background:var(--bg4);border-color:var(--border3);}
+.btn:disabled{opacity:0.4;cursor:not-allowed;}
+.btn-gold{background:var(--gold);color:#0c0c0e;border-color:var(--gold);font-weight:600;}
+.btn-gold:hover:not(:disabled){background:#c49a40;}
+.btn-sm{padding:5px 10px;font-size:0.73rem;}
+.btn-ghost{background:none;border:none;color:var(--text2);padding:5px 8px;font-size:0.76rem;border-radius:6px;}
+.btn-ghost:hover{background:var(--bg3);color:var(--text);}
+
+/* CONTENT */
+.content{flex:1;padding:1.4rem 1.75rem;overflow-y:auto;}
+.content::-webkit-scrollbar{width:4px;}
+.content::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:55vh;text-align:center;gap:0.75rem;}
+.empty-glyph{font-family:var(--serif);font-size:3rem;color:var(--border2);font-style:italic;line-height:1;}
+.empty p{font-size:0.8rem;color:var(--text3);max-width:260px;line-height:1.6;}
+
+/* STORY CARDS */
+.cards-grid{display:grid;gap:0.8rem;}
+.story-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;transition:border-color 0.15s;animation:up 0.2s ease both;}
+.story-card:hover{border-color:var(--border2);}
+@keyframes up{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.card-stripe{height:2px;}
+.s-news{background:var(--gold);}
+.s-trend{background:var(--teal);}
+.s-product{background:var(--rose);}
+.s-story{background:var(--violet);}
+.s-social{background:linear-gradient(90deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);}
+.card-inner{padding:0.95rem 1.1rem;}
+.card-top{display:flex;align-items:center;gap:7px;margin-bottom:0.55rem;flex-wrap:wrap;}
+.badge{font-size:0.6rem;font-family:var(--mono);text-transform:uppercase;letter-spacing:0.07em;padding:2px 7px;border-radius:20px;border:1px solid;}
+.b-news{background:var(--gold-bg);color:var(--gold);border-color:var(--gold-border);}
+.b-trend{background:var(--teal-bg);color:var(--teal);border-color:var(--teal-border);}
+.b-product{background:var(--rose-bg);color:var(--rose);border-color:var(--rose-border);}
+.b-story{background:var(--violet-bg);color:var(--violet);border-color:var(--violet-border);}
+.b-social{background:rgba(240,148,51,0.1);color:#f09433;border-color:rgba(240,148,51,0.3);}
+.card-source{font-size:0.65rem;font-family:var(--mono);color:var(--text3);}
+.card-title{font-size:0.88rem;font-weight:500;line-height:1.45;margin-bottom:0.4rem;}
+.card-snippet{font-size:0.76rem;color:var(--text2);line-height:1.6;margin-bottom:0.65rem;}
+.card-angle{font-size:0.73rem;font-family:var(--mono);color:var(--gold);background:var(--gold-bg);border-radius:6px;padding:5px 9px;line-height:1.5;margin-bottom:0.65rem;}
+.card-angle::before{content:"✦ ";opacity:0.5;}
+.card-sources-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:0.65rem;}
+.source-chip{font-size:0.62rem;font-family:var(--mono);padding:2px 7px;border-radius:20px;background:var(--bg3);border:1px solid var(--border);color:var(--text3);}
+.card-actions{display:flex;align-items:center;gap:6px;padding-top:0.65rem;border-top:1px solid var(--border);}
+.card-actions a{font-size:0.7rem;color:var(--text3);text-decoration:none;}
+.card-actions a:hover{color:var(--gold);}
+.save-btn.saved{color:var(--teal);border-color:var(--teal-border);background:var(--teal-bg);}
+.selected-card{border-color:var(--gold) !important;}
+
+/* SOURCES PANEL */
+.sources-section{margin-bottom:1.25rem;}
+.sources-section h3{font-size:0.65rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.6rem;}
+.sources-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.source-tag{font-size:0.72rem;font-family:var(--mono);padding:4px 11px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);}
+
+/* DRAFT */
+.draft-panel{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.draft-left,.draft-right{display:flex;flex-direction:column;gap:0.875rem;}
+.panel-label{font-size:0.63rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;}
+.field-group{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.1rem;}
+.tone-pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:0.5rem;}
+.selected-story-box{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:0.7rem 0.9rem;font-size:0.76rem;color:var(--text2);line-height:1.5;}
+.selected-story-box strong{color:var(--text);font-size:0.8rem;display:block;margin-bottom:3px;}
+.post-box{background:var(--bg3);border:1px solid var(--border);border-radius:7px;padding:1rem;font-size:0.84rem;line-height:1.8;color:var(--text);min-height:220px;white-space:pre-wrap;word-break:break-word;outline:none;flex:1;}
+.post-box:focus{border-color:var(--border2);}
+.post-box.placeholder{color:var(--text3);font-style:italic;}
+.post-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:8px;}
+.char-pill{font-size:0.68rem;font-family:var(--mono);color:var(--text3);}
+.char-pill.warn{color:var(--gold);}
+.char-pill.over{color:var(--rose);}
+
+/* CONTACTS */
+.contacts-layout{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.search-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;}
+.contact-row{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:0.8rem 0.9rem;display:flex;align-items:center;gap:10px;animation:up 0.2s ease both;transition:border-color 0.15s;}
+.contact-row:hover{border-color:var(--border2);}
+.avi{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:0.75rem;flex-shrink:0;font-family:var(--mono);}
+.av-g{background:var(--teal-bg);color:var(--teal);}
+.av-a{background:var(--gold-bg);color:var(--gold);}
+.av-r{background:var(--rose-bg);color:var(--rose);}
+.contact-info{flex:1;min-width:0;}
+.contact-name{font-size:0.82rem;font-weight:500;}
+.contact-sub{font-size:0.7rem;color:var(--text2);margin-top:1px;}
+.contact-notes{font-size:0.68rem;color:var(--text3);font-style:italic;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.status-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.sd-new{background:var(--text3);}
+.sd-out{background:var(--gold);}
+.sd-replied{background:var(--teal);}
+select{background:var(--bg3);border:1px solid var(--border);border-radius:6px;color:var(--text2);font-family:var(--mono);font-size:0.68rem;padding:3px 6px;outline:none;cursor:pointer;}
+select:focus{border-color:var(--border2);}
+input[type=text],textarea{background:var(--bg3);border:1px solid var(--border);border-radius:7px;color:var(--text);font-family:var(--font);font-size:0.8rem;padding:7px 10px;outline:none;width:100%;transition:border-color 0.15s;}
+input[type=text]:focus,textarea:focus{border-color:var(--border2);}
+input[type=text]::placeholder,textarea::placeholder{color:var(--text3);}
+textarea{resize:vertical;line-height:1.6;}
+
+/* SAVED BAR */
+.saved-bar{background:var(--bg2);border-top:1px solid var(--border);padding:0.8rem 1.75rem;display:flex;align-items:center;gap:9px;flex-wrap:wrap;flex-shrink:0;}
+.saved-bar-label{font-size:0.62rem;font-family:var(--mono);color:var(--text3);text-transform:uppercase;letter-spacing:0.1em;flex-shrink:0;}
+.saved-chips{display:flex;flex-wrap:wrap;gap:5px;flex:1;}
+.chip{font-size:0.7rem;padding:3px 9px;border-radius:20px;border:1px solid var(--border2);background:var(--bg3);color:var(--text2);display:flex;align-items:center;gap:5px;max-width:200px;}
+.chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.chip button{background:none;border:none;color:var(--text3);cursor:pointer;font-size:13px;line-height:1;flex-shrink:0;}
+.chip button:hover{color:var(--rose);}
+
+/* SKELETONS */
+.skel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.1rem;animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.skel-line{height:8px;border-radius:4px;background:var(--bg4);margin-bottom:8px;}
+.spinner{display:inline-block;width:11px;height:11px;border:2px solid rgba(255,255,255,0.15);border-top-color:var(--text);border-radius:50%;animation:spin 0.7s linear infinite;vertical-align:middle;margin-right:5px;}
+.spinner-dark{border-color:rgba(0,0,0,0.15);border-top-color:#0c0c0e;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.notice{font-size:0.73rem;font-family:var(--mono);padding:7px 11px;border-radius:7px;margin-bottom:0.75rem;}
+.n-amber{background:var(--gold-bg);border:1px solid var(--gold-border);color:var(--gold);}
+.n-teal{background:var(--teal-bg);border:1px solid var(--teal-border);color:var(--teal);}
+.contacts-gap{display:flex;flex-direction:column;gap:0.55rem;}
+
+@media(max-width:900px){
+  .shell{grid-template-columns:1fr;}
+  .sidebar{position:relative;height:auto;max-height:42vh;}
+  .draft-panel,.contacts-layout{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-name">Signal<em>+</em> · 5280</div>
+    <div class="brand-sub">Editorial content suite</div>
+  </div>
+  <nav class="nav">
+    <div class="nav-item active" onclick="switchTab('discover')" id="nav-discover">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.4"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Discover
+    </div>
+    <div class="nav-item" onclick="switchTab('draft')" id="nav-draft">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><rect x="2" y="3" width="12" height="10" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M5 7h6M5 9.5h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Draft Post
+    </div>
+    <div class="nav-item" onclick="switchTab('contacts')" id="nav-contacts">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none"><circle cx="6" cy="6" r="3" stroke="currentColor" stroke-width="1.4"/><path d="M1 14c0-2.76 2.24-5 5-5s5 2.24 5 5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/><path d="M12 7v4M10 9h4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>
+      Contacts
+    </div>
+  </nav>
+  <div class="cat-section">
+    <div class="cat-search-wrap">
+      <input type="text" id="cat-search" placeholder="Filter categories..." oninput="filterCats()"/>
+    </div>
+    <div class="cat-list" id="cat-list"></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="tab-bar">
+    <div class="tab active" id="tab-discover" onclick="switchTab('discover')">Discover</div>
+    <div class="tab" id="tab-draft" onclick="switchTab('draft')">
+      Draft Post <span class="tab-badge" id="draft-badge" style="display:none;">1</span>
+    </div>
+    <div class="tab" id="tab-contacts" onclick="switchTab('contacts')">
+      Contacts <span class="tab-badge" id="contacts-badge">0</span>
+    </div>
+  </div>
+
+  <!-- DISCOVER -->
+  <div id="view-discover">
+    <div class="page-header">
+      <h1 id="discover-title">Pick a category</h1>
+      <p id="discover-sub">Select an industry from the left to surface content ideas + trusted sources</p>
+    </div>
+    <div class="toolbar" id="discover-toolbar" style="display:none;">
+      <span class="pill active" data-f="all" onclick="setFilter(this)">All</span>
+      <span class="pill" data-f="news" onclick="setFilter(this)">News</span>
+      <span class="pill" data-f="trend" onclick="setFilter(this)">Trends</span>
+      <span class="pill" data-f="product" onclick="setFilter(this)">Product</span>
+      <span class="pill" data-f="story" onclick="setFilter(this)">Stories</span>
+      <span class="pill" data-f="social" onclick="setFilter(this)">Social</span>
+      <div class="toolbar-right">
+        <button class="btn btn-sm" id="refresh-btn" onclick="loadDiscover()" style="display:none;">↻ Refresh</button>
+      </div>
+    </div>
+    <div class="content" id="discover-content">
+      <div class="empty"><div class="empty-glyph">∞</div><p>Select an industry category to discover content ideas, trusted sources, and Denver social accounts.</p></div>
+    </div>
+  </div>
+
+  <!-- DRAFT -->
+  <div id="view-draft" style="display:none;">
+    <div class="page-header">
+      <h1>Draft LinkedIn Post</h1>
+      <p>Turn a story idea into a LinkedIn post for 5280 Magazine's sales team</p>
+    </div>
+    <div class="content">
+      <div class="draft-panel">
+        <div class="draft-left">
+          <div class="field-group">
+            <div class="panel-label">Selected story</div>
+            <div id="selected-story-box" class="selected-story-box" style="color:var(--text3);font-style:italic;">No story selected — go to Discover and click "Use for post →"</div>
+          </div>
+          <div class="field-group">
+            <div class="panel-label">Who is posting?</div>
+            <input type="text" id="d-rep" placeholder="Rep name (optional, for personalization)" style="margin-bottom:8px;"/>
+            <input type="text" id="d-role" placeholder="Their title (e.g. Account Executive)"/>
+          </div>
+          <div class="field-group">
+            <div class="panel-label">Tone</div>
+            <div class="tone-pills">
+              <span class="pill active" data-tone="insightful" onclick="setTone(this)">Insightful</span>
+              <span class="pill" data-tone="conversational" onclick="setTone(this)">Conversational</span>
+              <span class="pill" data-tone="bold" onclick="setTone(this)">Bold take</span>
+              <span class="pill" data-tone="story" onclick="setTone(this)">Storytelling</span>
+              <span class="pill" data-tone="punchy" onclick="setTone(this)">Short & punchy</span>
+            </div>
+          </div>
+          <button class="btn btn-gold" id="draft-btn" onclick="draftPost()" disabled>Generate draft</button>
+        </div>
+        <div class="draft-right">
+          <div class="field-group" style="flex:1;display:flex;flex-direction:column;">
+            <div class="panel-label">Post draft <span id="post-status" style="font-size:0.63rem;color:var(--text3);margin-left:6px;"></span></div>
+            <div id="post-box" class="post-box placeholder" contenteditable="false">Your draft will appear here...</div>
+            <div class="post-meta">
+              <span class="char-pill" id="char-count"></span>
+              <div style="margin-left:auto;display:flex;gap:6px;">
+                <button class="btn btn-sm btn-ghost" id="copy-btn" onclick="copyPost()" style="display:none;">Copy</button>
+                <button class="btn btn-sm btn-ghost" id="regen-btn" onclick="draftPost()" style="display:none;">↻ Regen</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACTS -->
+  <div id="view-contacts" style="display:none;">
+    <div class="page-header">
+      <h1>Contact Finder</h1>
+      <p>Search LinkedIn profiles by keyword and track your outreach pipeline</p>
+    </div>
+    <div class="content">
+      <div class="contacts-layout">
+        <div>
+          <div class="search-card" style="margin-bottom:0.875rem;">
+            <div class="panel-label">Search keywords</div>
+            <div id="kw-tags" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px;min-height:22px;"></div>
+            <div style="display:flex;gap:7px;margin-bottom:0.875rem;">
+              <input type="text" id="kw-input" placeholder="Title, industry, company..."/>
+              <button class="btn btn-sm" onclick="addKw()">+ Add</button>
+            </div>
+            <div style="display:flex;gap:7px;margin-bottom:0.875rem;flex-wrap:wrap;">
+              <select id="f-title" style="flex:1;font-size:0.76rem;padding:6px 8px;">
+                <option value="">Any title</option>
+                <option>CEO</option><option>CMO</option><option>Marketing Director</option>
+                <option>VP Marketing</option><option>Owner</option><option>Founder</option>
+                <option>Marketing Manager</option><option>Director</option><option>President</option>
+              </select>
+              <select id="f-loc" style="flex:1;font-size:0.76rem;padding:6px 8px;">
+                <option value="">Any location</option>
+                <option>Denver</option><option>Colorado</option><option>Boulder</option>
+                <option>Fort Collins</option><option>Colorado Springs</option><option>Aurora</option>
+              </select>
+            </div>
+            <button class="btn btn-gold" style="width:100%;" onclick="runSearch()">Search LinkedIn ↗</button>
+            <div id="search-link" style="margin-top:0.75rem;"></div>
+          </div>
+          <div class="search-card">
+            <div class="panel-label">Add contact</div>
+            <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:0.75rem;">
+              <input type="text" id="c-name" placeholder="Full name *"/>
+              <input type="text" id="c-company" placeholder="Company name"/>
+              <input type="text" id="c-title" placeholder="Title"/>
+              <input type="text" id="c-url" placeholder="linkedin.com/in/..."/>
+              <input type="text" id="c-notes" placeholder="Notes (optional)"/>
+              <select id="c-status" style="width:100%;font-size:0.78rem;padding:7px 9px;">
+                <option value="new">New</option>
+                <option value="out">Reached out</option>
+                <option value="replied">Replied</option>
+                <option value="meeting">Meeting set</option>
+              </select>
+            </div>
+            <button class="btn btn-sm" style="width:100%;" onclick="addContact()">Save contact</button>
+          </div>
+        </div>
+        <div>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:0.75rem;">
+            <div class="panel-label" style="margin:0;">Saved contacts</div>
+            <span class="badge b-trend" id="c-count">0</span>
+            <div style="margin-left:auto;display:flex;gap:6px;">
+              <input type="text" id="c-filter" placeholder="Filter..." style="width:120px;font-size:0.73rem;padding:5px 8px;" oninput="renderContacts()"/>
+              <button class="btn btn-sm btn-ghost" onclick="exportContacts()">CSV</button>
+            </div>
+          </div>
+          <div id="contacts-list" class="contacts-gap">
+            <div class="empty" style="height:28vh;"><div class="empty-glyph" style="font-size:2rem;">◌</div><p>No contacts yet.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SAVED BAR -->
+  <div class="saved-bar" id="saved-bar" style="display:none;">
+    <div class="saved-bar-label">Saved</div>
+    <div class="saved-chips" id="saved-chips"></div>
+    <button class="btn btn-sm btn-ghost" onclick="exportSaved()">Export CSV</button>
+    <button class="btn btn-sm btn-ghost" onclick="clearSaved()">Clear all</button>
+  </div>
+</div>
+</div>
+
+<script>
+// ── CATEGORIES + TRUSTED SOURCES ─────────────
+const CATS = [
+  {g:"Health & Wellness",i:[
+    {n:"Alternative Health (Chiropractors, Holistic, Acupuncture)",   src:["Natural Awakenings","Chiropractic Economics","Today's Chiropractic","Integrative Practitioner"],           social:["5280 Health","Denver Holistic Scene"]},
+    {n:"Beauty (Med Spas — No Physician Practice)",                    src:["MedEsthetics","ASCP Skin Deep","Modern Aesthetics","Dermascope"],                                          social:["Denver Beauty Scene","Colorado Wellness Collective"]},
+    {n:"Dentists: General Dentistry",                                  src:["ADA News","Dental Economics","Dentistry Today","Journal of the ADA"],                                       social:["Colorado Dental Association","Denver Health News"]},
+    {n:"Dentists: Specialty (Periodontics, Prosthodontics, Ortho…)",   src:["Journal of Periodontology","Compendium","American Journal of Orthodontics","AAO News"],                    social:["Colorado Dental Association"]},
+    {n:"Health (All Specialties)",                                     src:["Modern Healthcare","Fierce Healthcare","Health Affairs","NEJM","Medscape"],                                social:["Denver Health News","Colorado Health Foundation"]},
+    {n:"Healthcare Services (Practice Mgmt, Credentialing…)",         src:["Medical Economics","Physicians Practice","Healthcare Finance News","MGMA"],                                 social:["Colorado Medical Society","Denver Biz Journal Health"]},
+    {n:"Hospitals",                                                    src:["Modern Healthcare","Becker's Hospital Review","Health Leaders","STAT News"],                               social:["UCHealth","SCL Health Colorado","Denver Health"]},
+    {n:"Insurance (Health)",                                           src:["Health Affairs","Modern Healthcare","Kaiser Health News","Benefits Pro"],                                  social:["Colorado Division of Insurance"]},
+    {n:"Retirement Homes (With Health Services)",                      src:["McKnight's Long-Term Care","Provider Magazine","Senior Housing News","LeadingAge"],                        social:["Colorado Gerontological Society"]},
+    {n:"Retirement Homes (No Health Services)",                        src:["Senior Housing News","Multifamily Executive","McKnight's","Argentum"],                                     social:["Colorado Senior Living"]},
+    {n:"Sports & Fitness",                                             src:["IDEA Fitness Journal","Club Industry","Athletic Business","NSCA Strength & Conditioning"],                 social:["Denver Rec","Colorado Fitness Community","303 Fitness"]},
+  ]},
+  {g:"Food & Beverage",i:[
+    {n:"Food: Corporate Restaurants & National Food/Bev Manufacturers",src:["Nation's Restaurant News","Restaurant Business","QSR Magazine","Food Business News"],                    social:["Denver Food Scene","Colorado Restaurant Association"]},
+    {n:"Food: Local Restaurants & Local Food/Bev Manufacturers",      src:["Eater Denver","Westword Food","5280 Dining","Denver Post Food","Colorado Biz Food"],                        social:["Eater Denver","Denver Dining","Colorado Foodies"]},
+    {n:"Grocery",                                                      src:["Supermarket News","Progressive Grocer","Winsight Grocery","The Shelby Report"],                            social:["Colorado Grocery Association","Denver Food Bank"]},
+    {n:"Liquor: Brands, Stores/Vendors, Venues (No Food Menu)",       src:["Beverage Dynamics","Wine & Spirits","The Tasting Panel","Craft Brewing Business","Brewbound"],             social:["Colorado Brewers Guild","Denver Beer Scene","303 Spirits"]},
+  ]},
+  {g:"Finance & Legal",i:[
+    {n:"Finance / Banking",                                            src:["American Banker","Denver Business Journal","Colorado Banker","Bloomberg","WSJ Finance"],                   social:["Colorado Bankers Association","Denver Finance"]},
+    {n:"Financial Services: Accounting, Tax, Bookkeeping, CFO",       src:["Journal of Accountancy","Accounting Today","CPA Journal","Tax Notes"],                                     social:["Colorado Society of CPAs","Denver CFO Network"]},
+    {n:"Insurance (Not Health)",                                       src:["Insurance Journal","PropertyCasualty360","Business Insurance","Carrier Management"],                      social:["Colorado Division of Insurance","Denver Insurance Professionals"]},
+    {n:"Legal: Inside ZIP 80202–80206 & 80218",                       src:["Law360","Colorado Lawyer","ABA Journal","Colorado Bar Association CLE","Above the Law"],                   social:["Colorado Bar Association","Denver Bar Association"]},
+    {n:"Legal: Outside ZIP 80202–80206 & 80218",                      src:["Law360","Colorado Lawyer","ABA Journal","Colorado Bar Association CLE"],                                   social:["Colorado Bar Association","Suburban Bar Denver"]},
+  ]},
+  {g:"Real Estate & Home",i:[
+    {n:"Real Estate A",                                                src:["Colorado Real Estate Journal","Denver Business Journal RE","Inman","The Real Deal","CoStar"],              social:["Colorado Association of Realtors","Denver Metro Real Estate"]},
+    {n:"Real Estate B",                                                src:["Colorado Real Estate Journal","Denver Business Journal RE","Inman","RealTrends"],                         social:["Colorado Association of Realtors","Zillow Denver Talk"]},
+    {n:"Real Estate: Coldwell Banker",                                 src:["Inman","RealTrends","Colorado Real Estate Journal","Mansion Global"],                                     social:["Coldwell Banker Colorado","Denver Metro Real Estate"]},
+    {n:"Real Estate Services (Mgmt, Leasing, Appraisal, Title…)",     src:["Colorado Real Estate Journal","IREM Journal","Apartment Finance Today","National Mortgage News"],          social:["Colorado Association of Realtors","IREM Colorado"]},
+    {n:"Home Services (Urban Core)",                                   src:["Remodeling Magazine","ProRemodeler","JLC Online","Builder Magazine"],                                      social:["Denver Home Improvement","Colorado Contractors"]},
+    {n:"Home Services (South Metro)",                                  src:["Remodeling Magazine","ProRemodeler","Builder Magazine","Professional Builder"],                            social:["South Metro Denver Home Services","Parker Home Pros"]},
+    {n:"Home Services (West Metro)",                                   src:["Remodeling Magazine","ProRemodeler","Builder Magazine"],                                                   social:["Lakewood Home Scene","Jefferson County Home Pros"]},
+    {n:"Home Services (East Metro)",                                   src:["Remodeling Magazine","ProRemodeler","Professional Builder"],                                               social:["Aurora Home Services","East Denver Home Pros"]},
+    {n:"Home Services (North Metro)",                                  src:["Remodeling Magazine","ProRemodeler","Professional Builder"],                                               social:["Thornton Home Scene","Broomfield Home Pros"]},
+    {n:"Home Services (Boulder/Longmont/NoCo)",                        src:["Remodeling Magazine","Boulder Daily Camera Business","BizWest","ProRemodeler"],                           social:["Boulder Home Improvement","NoCo Contractors"]},
+    {n:"Inside Shelter (Interior Design)",                             src:["Interior Design Magazine","Architectural Digest","Residential Design","Colorado Homes & Lifestyles"],     social:["Colorado Homes & Lifestyles","Denver Interior Design"]},
+    {n:"Outside Shelter",                                              src:["Landscape Architecture Magazine","Lawn & Landscape","Pro Landscaper","Turf Magazine"],                    social:["Colorado Nursery & Greenhouse Assoc","Denver Landscape"]},
+    {n:"Shopping Centers",                                             src:["Shopping Center Business","ICSC","Chain Store Age","Globe St Retail"],                                    social:["ICSC Colorado","Denver Retail Scene"]},
+  ]},
+  {g:"Business & Professional",i:[
+    {n:"Automotive",                                                   src:["Automotive News","WardsAuto","Car and Driver","Motor Trend","Dealer Magazine"],                            social:["Colorado Auto Dealers Association","Denver Car Scene"]},
+    {n:"Automotive Services",                                          src:["Motor Age","Automotive Body Repair News","Shop Owner","Professional Tool & Equipment News"],               social:["Colorado Auto Dealers Association","Denver Auto Repair"]},
+    {n:"Business Services: Consulting, Advisory, Recruiting, Co-Working",src:["Harvard Business Review","Inc Magazine","Fast Company","Consulting Magazine","CoStar Office"],         social:["Denver Business Journal","Colorado SHRM","Duct Tape Marketing"]},
+    {n:"Education (Higher Ed)",                                        src:["Chronicle of Higher Education","Inside Higher Ed","EDUCAUSE","Colorado Department of Higher Ed"],          social:["Colorado Department of Higher Education","Denver Higher Ed"]},
+    {n:"Education (Primary)",                                          src:["Education Week","Edutopia","Colorado Department of Education","Learning Forward"],                         social:["Colorado Department of Education","Denver Public Schools"]},
+    {n:"Non-Profits",                                                  src:["Non Profit Times","Chronicle of Philanthropy","Colorado Nonprofit Association","Philanthropy Journal"],    social:["Colorado Nonprofit Association","Denver Foundation","Mile High United Way"]},
+    {n:"Political",                                                    src:["Colorado Politics","The Colorado Sun","Denver Post Politics","Axios Denver","Politico"],                   social:["Colorado Politics","The Colorado Sun","Denver Post Politics"]},
+  ]},
+  {g:"Retail & Fashion",i:[
+    {n:"Department Stores",                                            src:["Retail Dive","Chain Store Age","NRF","WWD","Business of Fashion"],                                         social:["NRF Colorado","Denver Retail Scene","Cherry Creek Shopping"]},
+    {n:"Fashion & Apparel",                                            src:["WWD","Business of Fashion","Sourcing Journal","Retail Dive Fashion","Vogue Business"],                     social:["Denver Fashion Week","Colorado Fashion Scene","5280 Style"]},
+    {n:"Jewelry (Excludes John Atencio)",                              src:["JCK Magazine","National Jeweler","Jewelers Circular Keystone","Rapaport"],                                social:["Jewelers of America Colorado","Denver Jewelry Scene"]},
+    {n:"Pet Services / Pet Retail",                                    src:["Pet Business Magazine","Pet Age","Pet Product News","APPA"],                                               social:["Colorado Pet Community","Denver Dog Scene","303 Pets"]},
+    {n:"Retail (Excludes Jewelry & Inside Shelter)",                   src:["Retail Dive","NRF","Chain Store Age","PYMNTS Retail","Retail TouchPoints"],                               social:["NRF Colorado","Denver Retail","Colorado Small Biz"]},
+  ]},
+  {g:"Entertainment & Culture",i:[
+    {n:"Entertainment: SCFD 1 Affiliations",                           src:["ArtsJournal","Art in America","Musical America","Denver Post Arts","Westword Arts"],                       social:["Denver Center for the Performing Arts","Colorado Symphony","Denver Art Museum"]},
+    {n:"Entertainment: SCFD 2 & 3 Affiliations",                      src:["ArtsJournal","Westword Arts","Denver Post Arts","Colorado Arts & Sciences","Americans for the Arts"],      social:["SCFD Colorado","Denver Arts & Venues","Colorado Creative Industries"]},
+    {n:"Event Services (Excludes Catering & Liquor)",                  src:["Special Events","BizBash","Eventbrite Industry","Event Marketer","Meetings & Conventions"],                social:["Denver Event Professionals","Colorado Event Network","Visit Denver"]},
+    {n:"Galleries",                                                    src:["Art in America","Artforum","Hyperallergic","Denver Post Arts","Westword Arts"],                            social:["Denver Art Museum","Denver Art Scene","Colorado Creative Industries"]},
+    {n:"Vice (Cannabis, Sports Betting)",                              src:["MJ BizDaily","Cannabis Business Times","Legal Sports Report","Gaming Today","Marijuana Moment"],           social:["Colorado Marijuana Industry Group","Denver Cannabis Scene","Colorado Gaming"]},
+  ]},
+  {g:"Travel & Lifestyle",i:[
+    {n:"City Travel",                                                  src:["Skift","Travel Weekly","Phocuswire","Visit Denver","Colorado Tourism Office"],                             social:["Visit Denver","Colorado Tourism","5280 Travel","Westword Denver"]},
+    {n:"Travel (Agents, DMC, Corporate Travel)",                       src:["Travel Weekly","Skift","Business Travel News","ASTA","Meetings & Conventions"],                           social:["Visit Denver","Colorado Tourism Office","Colorado ESTO"]},
+  ]},
+];
+
+// ── STATE ────────────────────────────────────
+const SAVED_KEY='signal5280_saved_v1', CONTACTS_KEY='signal5280_contacts_v1';
+let saved=[], contacts=[], keywords=[], activeCat=null, activeFilter='all', discoverItems=[], selectedStory=null, activeTone='insightful';
+
+(function init(){
+  try{saved=JSON.parse(localStorage.getItem(SAVED_KEY)||'[]');}catch{saved=[];}
+  try{contacts=JSON.parse(localStorage.getItem(CONTACTS_KEY)||'[]');}catch{contacts=[];}
+  document.getElementById('kw-input').addEventListener('keydown',e=>{if(e.key==='Enter')addKw();});
+  renderCats(); renderSaved(); renderContacts(); updateBadges();
+})();
+
+// ── TABS ──────────────────────────────────────
+function switchTab(tab){
+  ['discover','draft','contacts'].forEach(t=>{
+    document.getElementById(`view-${t}`).style.display=t===tab?'':'none';
+    document.getElementById(`tab-${t}`).classList.toggle('active',t===tab);
+    document.getElementById(`nav-${t}`).classList.toggle('active',t===tab);
+  });
+}
+function updateBadges(){
+  document.getElementById('contacts-badge').textContent=contacts.length;
+  const db=document.getElementById('draft-badge');
+  db.style.display=selectedStory?'inline':'none';
+}
+
+// ── SIDEBAR ───────────────────────────────────
+function renderCats(q=''){
+  const ql=q.toLowerCase();
+  let html='';
+  CATS.forEach(g=>{
+    const items=g.i.filter(i=>!ql||i.n.toLowerCase().includes(ql));
+    if(!items.length) return;
+    html+=`<div class="group-label">${g.g}</div>`;
+    items.forEach(item=>{
+      html+=`<div class="cat-item ${activeCat?.n===item.n?'active':''}" onclick='selectCat(${JSON.stringify(item).replace(/'/g,"&#39;")})'>${item.n}</div>`;
+    });
+  });
+  document.getElementById('cat-list').innerHTML=html||'<div style="padding:1rem 1.25rem;font-size:0.76rem;color:var(--text3);">No matches</div>';
+}
+function filterCats(){renderCats(document.getElementById('cat-search').value);}
+
+function selectCat(cat){
+  activeCat=cat; activeFilter='all';
+  document.querySelectorAll('.pill[data-f]').forEach(p=>p.classList.toggle('active',p.dataset.f==='all'));
+  renderCats(document.getElementById('cat-search').value);
+  document.getElementById('discover-title').textContent=cat.n;
+  document.getElementById('discover-sub').textContent='Fetching content ideas from trusted sources…';
+  document.getElementById('discover-toolbar').style.display='flex';
+  document.getElementById('refresh-btn').style.display='inline-flex';
+  switchTab('discover');
+  loadDiscover();
+}
+
+// ── DISCOVER ──────────────────────────────────
+function setFilter(el){
+  activeFilter=el.dataset.f;
+  document.querySelectorAll('.pill[data-f]').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  renderDiscover();
+}
+
+async function loadDiscover(){
+  if(!activeCat) return;
+  const btn=document.getElementById('refresh-btn');
+  btn.disabled=true; btn.textContent='↻ Loading…';
+  showSkeletons();
+
+  const srcList = activeCat.src.join(', ');
+  const socialList = activeCat.social.join(', ');
+
+  const prompt = `You are a content strategist for 5280 Magazine, a premium Denver/Colorado lifestyle and business publication. The editorial team needs content discovery for the category: "${activeCat.n}".
+
+Trusted sources for this category: ${srcList}
+Relevant Denver/Colorado social accounts: ${socialList}
+
+Return ONLY a valid JSON array (no markdown, no preamble) with exactly 8 items mixing these types:
+- "news": breaking or recent industry news (prefer stories from the trusted sources listed)
+- "trend": broader shifts or patterns in this industry in Colorado/Denver
+- "product": product launches, rebrands, or business announcements relevant to this category in CO
+- "story": human interest or narrative angles relevant to Denver/Colorado audiences
+- "social": what Denver/Colorado Instagram or Facebook accounts in this space are talking about right now
+
+Shape:
+[{"type":"news"|"trend"|"product"|"story"|"social","title":"...","source":"publication or @account","snippet":"2-3 sentences","angle":"one sharp editorial hook for 5280 Magazine","url":""}]
+
+Focus on Colorado/Denver relevance where possible. Return ONLY the JSON array.`;
+
+  try{
+    const res = await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+      messages:[{role:'user',content:prompt}],
+      max_tokens:800
+    })});
+    const data = await res.json();
+    let raw=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('').replace(/```json|```/g,'').trim();
+    const s=raw.indexOf('['),e=raw.lastIndexOf(']');
+    discoverItems=JSON.parse(raw.slice(s,e+1));
+    document.getElementById('discover-sub').textContent=`${discoverItems.length} ideas · ${activeCat.n}`;
+    renderDiscover();
+  }catch(err){
+    document.getElementById('discover-content').innerHTML=`<div class="notice n-amber">Could not load ideas. Make sure the server is running and try again.</div><button class="btn btn-sm" onclick="loadDiscover()">Retry</button>`;
+  }
+  btn.disabled=false; btn.textContent='↻ Refresh';
+}
+
+function showSkeletons(){
+  document.getElementById('discover-content').innerHTML=
+    `<div class="cards-grid">${Array(5).fill(0).map((_,i)=>`
+      <div class="skel" style="animation-delay:${i*0.1}s">
+        <div class="skel-line" style="width:50px;height:7px;margin-bottom:10px;"></div>
+        <div class="skel-line" style="width:78%;height:12px;margin-bottom:8px;"></div>
+        <div class="skel-line"></div><div class="skel-line" style="width:88%;"></div>
+      </div>`).join('')}</div>`;
+}
+
+function renderDiscover(){
+  const filtered=activeFilter==='all'?discoverItems:discoverItems.filter(d=>d.type===activeFilter);
+  if(!filtered.length){
+    document.getElementById('discover-content').innerHTML=`<div class="empty"><div class="empty-glyph" style="font-size:2rem;">◌</div><p>No ${activeFilter} items found.</p></div>`;
+    return;
+  }
+  const srcHtml = activeCat ? `
+    <div class="sources-section">
+      <h3>Trusted sources for ${activeCat.n}</h3>
+      <div class="sources-grid">
+        ${activeCat.src.map(s=>`<span class="source-tag">${s}</span>`).join('')}
+        ${activeCat.social.map(s=>`<span class="source-tag" style="border-color:rgba(240,148,51,0.3);color:#f09433;">@${s}</span>`).join('')}
+      </div>
+    </div>` : '';
+  document.getElementById('discover-content').innerHTML=
+    srcHtml+`<div class="cards-grid">${filtered.map((item,i)=>cardHTML(item,i)).join('')}</div>`;
+}
+
+function cardHTML(item,i){
+  const stripe={news:'s-news',trend:'s-trend',product:'s-product',story:'s-story',social:'s-social'}[item.type]||'s-news';
+  const bdg={news:'b-news',trend:'b-trend',product:'b-product',story:'b-story',social:'b-social'}[item.type]||'b-news';
+  const lbl={news:'News',trend:'Trend',product:'Product',story:'Story',social:'Social'}[item.type]||'News';
+  const isSaved=saved.some(s=>s.title===item.title);
+  const isSel=selectedStory?.title===item.title;
+  const j=JSON.stringify(item).replace(/'/g,"&#39;");
+  return `
+  <div class="story-card ${isSel?'selected-card':''}" style="animation-delay:${i*0.05}s">
+    <div class="card-stripe ${stripe}"></div>
+    <div class="card-inner">
+      <div class="card-top">
+        <span class="badge ${bdg}">${lbl}</span>
+        <span class="card-source">${item.source||''}</span>
+      </div>
+      <div class="card-title">${item.title}</div>
+      <div class="card-snippet">${item.snippet}</div>
+      <div class="card-angle">${item.angle}</div>
+      <div class="card-actions">
+        ${item.url?`<a href="${item.url}" target="_blank">Source ↗</a>`:''}
+        <button class="btn btn-sm save-btn ${isSaved?'saved':''}" onclick='toggleSave(${j})'>${isSaved?'✓ Saved':'Save'}</button>
+        <button class="btn btn-sm ${isSel?'btn-gold':''}" onclick='useForPost(${j})' style="margin-left:auto;">${isSel?'✓ Selected':'Use for post →'}</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── SAVE IDEAS ────────────────────────────────
+function toggleSave(item){
+  const idx=saved.findIndex(s=>s.title===item.title);
+  if(idx>-1)saved.splice(idx,1); else saved.push({...item,category:activeCat?.n,savedAt:new Date().toLocaleDateString()});
+  localStorage.setItem(SAVED_KEY,JSON.stringify(saved));
+  renderSaved(); renderDiscover();
+}
+function renderSaved(){
+  const bar=document.getElementById('saved-bar');
+  document.getElementById('saved-chips').innerHTML=saved.map((s,i)=>`
+    <div class="chip" title="${s.angle||''}"><span>${s.title.length>45?s.title.slice(0,45)+'…':s.title}</span><button onclick="removeSaved(${i})">×</button></div>`).join('');
+  bar.style.display=saved.length?'flex':'none';
+}
+function removeSaved(i){saved.splice(i,1);localStorage.setItem(SAVED_KEY,JSON.stringify(saved));renderSaved();renderDiscover();}
+function clearSaved(){if(!saved.length||!confirm('Clear all saved ideas?'))return;saved=[];localStorage.setItem(SAVED_KEY,JSON.stringify(saved));renderSaved();renderDiscover();}
+function exportSaved(){
+  if(!saved.length){alert('Nothing saved.');return;}
+  const rows=[['Title','Type','Source','Snippet','Angle','Category','Date'],...saved.map(s=>[s.title,s.type,s.source,s.snippet,s.angle,s.category,s.savedAt])];
+  dlCSV(rows,'5280_signal_ideas');
+}
+
+// ── DRAFT POST ────────────────────────────────
+function useForPost(item){
+  selectedStory=item;
+  document.getElementById('selected-story-box').innerHTML=`<strong>${item.title}</strong>${item.snippet}<br/><span style="font-size:0.7rem;color:var(--gold);font-family:var(--mono);">Angle: ${item.angle}</span>`;
+  document.getElementById('draft-btn').disabled=false;
+  updateBadges(); renderDiscover(); switchTab('draft');
+}
+function setTone(el){
+  activeTone=el.dataset.tone;
+  document.querySelectorAll('.pill[data-tone]').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+}
+async function draftPost(){
+  if(!selectedStory) return;
+  const rep=document.getElementById('d-rep').value.trim();
+  const role=document.getElementById('d-role').value.trim()||'Account Executive';
+  const toneMap={insightful:'thoughtful and analytical, sharing a genuine industry insight',conversational:'warm and natural like talking to a peer — not corporate',bold:'bold, contrarian, strong opinion — willing to challenge conventional thinking',story:'open with a small scene or story that pulls the reader in, build to a point',punchy:'short and punchy — max 5 lines, every word earns its place'};
+  const btn=document.getElementById('draft-btn');
+  btn.disabled=true; btn.textContent='Generating…';
+  const box=document.getElementById('post-box');
+  box.classList.add('placeholder'); box.textContent='Drafting…'; box.contentEditable='false';
+  document.getElementById('copy-btn').style.display='none';
+  document.getElementById('regen-btn').style.display='none';
+  document.getElementById('post-status').textContent='';
+
+  const prompt=`Write a LinkedIn post for ${rep?rep+', '+role+' at 5280 Magazine':'a sales rep at 5280 Magazine'}.
+
+5280 Magazine is Denver and Colorado's premier lifestyle and business magazine. The sales team sells print and digital advertising to Colorado businesses across dozens of industry categories — helping local and regional brands reach 5280's affluent, engaged Colorado readership.
+
+Story to use:
+Title: ${selectedStory.title}
+Summary: ${selectedStory.snippet}
+Editorial angle: ${selectedStory.angle}
+Category: ${activeCat?.n||'Colorado business'}
+
+Tone: ${toneMap[activeTone]||'insightful'}
+
+Instructions:
+- React to the story with a genuine perspective — don't just summarize it
+- Tie back to 5280 Magazine's value naturally in 1-2 lines (helping Colorado businesses reach the right audience, the power of local media, 5280's reach across Colorado industries)
+- End with a question or engagement hook
+- LinkedIn line breaks for readability
+- Max 3 hashtags at the end if any — keep them Colorado/Denver focused
+- ${activeTone==='punchy'?'80-120':'180-280'} words
+- Write ONLY the post text, nothing else.`;
+
+  try{
+    const res=await fetch('/api/ai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:[{role:'user',content:prompt}],max_tokens:500})});
+    const data=await res.json();
+    const text=(data.content||[]).filter(b=>b.type==='text').map(b=>b.text).join('').trim();
+    box.classList.remove('placeholder');
+    box.textContent=text; box.contentEditable='true';
+    box.oninput=updateCharCount; updateCharCount();
+    document.getElementById('copy-btn').style.display='inline-flex';
+    document.getElementById('regen-btn').style.display='inline-flex';
+    document.getElementById('post-status').textContent='· edit before posting';
+  }catch{
+    box.classList.add('placeholder'); box.textContent='Draft failed. Check server connection.';
+  }
+  btn.disabled=false; btn.textContent='Generate draft';
+}
+function updateCharCount(){
+  const n=document.getElementById('post-box').innerText.length;
+  const el=document.getElementById('char-count');
+  el.textContent=`${n} chars`;
+  el.className='char-pill'+(n>3000?' over':n>2500?' warn':'');
+}
+function copyPost(){
+  const text=document.getElementById('post-box').innerText;
+  navigator.clipboard.writeText(text).then(()=>{
+    const btn=document.getElementById('copy-btn');
+    btn.textContent='Copied!'; setTimeout(()=>btn.textContent='Copy',1800);
+  });
+}
+
+// ── CONTACTS ──────────────────────────────────
+function addKw(){const v=document.getElementById('kw-input').value.trim();if(!v||keywords.includes(v)){document.getElementById('kw-input').value='';return;}keywords.push(v);document.getElementById('kw-input').value='';renderKwTags();}
+function removeKw(kw){keywords=keywords.filter(k=>k!==kw);renderKwTags();}
+function renderKwTags(){document.getElementById('kw-tags').innerHTML=keywords.map(k=>`<span class="chip"><span>${k}</span><button onclick="removeKw('${k.replace(/'/g,"\\'")}')">×</button></span>`).join('')||'<span style="font-size:0.7rem;color:var(--text3);font-family:var(--mono);">add keywords above</span>';}
+function runSearch(){
+  if(!keywords.length){alert('Add at least one keyword.');return;}
+  const title=document.getElementById('f-title').value;
+  const loc=document.getElementById('f-loc').value;
+  const parts=['site:linkedin.com/in',...keywords];
+  if(title)parts.push(title); if(loc)parts.push(loc);
+  const query=parts.join(' ');
+  const url=`https://www.google.com/search?q=${encodeURIComponent(query)}&num=20`;
+  window.open(url,'_blank');
+  document.getElementById('search-link').innerHTML=`<div class="notice n-teal">Search opened — copy profiles and add them below.</div><div style="font-size:0.68rem;font-family:var(--mono);color:var(--text3);margin-top:3px;">${query} · <a href="${url}" target="_blank" style="color:var(--gold);text-decoration:none;">Open again ↗</a></div>`;
+}
+function addContact(){
+  const name=document.getElementById('c-name').value.trim();
+  if(!name){alert('Name required.');return;}
+  contacts.unshift({id:Date.now(),name,company:document.getElementById('c-company').value.trim(),title:document.getElementById('c-title').value.trim(),url:document.getElementById('c-url').value.trim(),notes:document.getElementById('c-notes').value.trim(),status:document.getElementById('c-status').value,added:new Date().toLocaleDateString()});
+  localStorage.setItem(CONTACTS_KEY,JSON.stringify(contacts));
+  ['c-name','c-company','c-title','c-url','c-notes'].forEach(id=>document.getElementById(id).value='');
+  renderContacts(); updateBadges();
+}
+function updateContactStatus(id,val){const c=contacts.find(c=>c.id===id);if(!c)return;c.status=val;localStorage.setItem(CONTACTS_KEY,JSON.stringify(contacts));renderContacts();}
+function deleteContact(id){contacts=contacts.filter(c=>c.id!==id);localStorage.setItem(CONTACTS_KEY,JSON.stringify(contacts));renderContacts();updateBadges();}
+const AV=['av-g','av-a','av-r'];
+function ini(n){return n.split(' ').filter(Boolean).slice(0,2).map(p=>p[0]).join('').toUpperCase();}
+function renderContacts(){
+  const q=(document.getElementById('c-filter').value||'').toLowerCase();
+  const fil=contacts.filter(c=>!q||c.name.toLowerCase().includes(q)||(c.company||'').toLowerCase().includes(q)||(c.title||'').toLowerCase().includes(q));
+  document.getElementById('c-count').textContent=contacts.length;
+  const list=document.getElementById('contacts-list');
+  if(!fil.length){list.innerHTML=`<div class="empty" style="height:28vh;"><div class="empty-glyph" style="font-size:2rem;">◌</div><p>${contacts.length?'No matches.':'No contacts yet.'}</p></div>`;return;}
+  list.innerHTML=fil.map((c,i)=>{
+    const av=AV[i%3];
+    const pu=c.url?(c.url.startsWith('http')?c.url:'https://'+c.url):'';
+    const sc={new:'sd-new',out:'sd-out',replied:'sd-replied',meeting:'sd-replied'}[c.status]||'sd-new';
+    return `<div class="contact-row" style="animation-delay:${i*0.04}s">
+      <div class="avi ${av}">${ini(c.name)}</div>
+      <div class="contact-info">
+        <div class="contact-name">${c.name}</div>
+        <div class="contact-sub">${[c.title,c.company].filter(Boolean).join(' · ')}</div>
+        ${c.notes?`<div class="contact-notes">${c.notes}</div>`:''}
+      </div>
+      <div class="status-dot ${sc}"></div>
+      <select onchange="updateContactStatus(${c.id},this.value)">
+        <option value="new" ${c.status==='new'?'selected':''}>New</option>
+        <option value="out" ${c.status==='out'?'selected':''}>Reached out</option>
+        <option value="replied" ${c.status==='replied'?'selected':''}>Replied</option>
+        <option value="meeting" ${c.status==='meeting'?'selected':''}>Meeting set</option>
+      </select>
+      ${pu?`<a href="${pu}" target="_blank"><button class="btn btn-sm">↗</button></a>`:''}
+      <button class="btn-ghost btn-sm" onclick="deleteContact(${c.id})" style="color:var(--text3);">✕</button>
+    </div>`;
+  }).join('');
+}
+function exportContacts(){
+  if(!contacts.length){alert('No contacts.');return;}
+  const rows=[['Name','Company','Title','LinkedIn','Notes','Status','Added'],...contacts.map(c=>[c.name,c.company,c.title,c.url,c.notes,c.status,c.added])];
+  dlCSV(rows,`5280_contacts_${new Date().toISOString().slice(0,10)}`);
+}
+function dlCSV(rows,name){
+  const csv=rows.map(r=>r.map(v=>`"${(v||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download=`${name}.csv`; a.click();
+}
+</script>
+</body>
+</html>
