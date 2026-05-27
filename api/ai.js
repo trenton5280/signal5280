@@ -15,7 +15,8 @@ export default async function handler(req, res) {
       },
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
-        max_tokens: max_tokens || 800,
+        max_tokens: max_tokens || 2000,
+        system: 'You are a helpful assistant. When asked to return JSON, return ONLY raw JSON with no markdown formatting, no code blocks, no backticks, and no explanation. Just the raw JSON.',
         messages,
       })
     });
